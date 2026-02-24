@@ -1,0 +1,366 @@
+import { BodyPartCatalog } from './data-models';
+
+/**
+ * Complete body part catalog with 30+ anatomical regions
+ * Divided into front and back diagram regions
+ */
+export const bodyPartCatalog: BodyPartCatalog = {
+  parts: {
+    // Head & Neck
+    head: {
+      id: 'head',
+      anatomicalName: 'Head',
+      location: 'front',
+      side: 'center',
+      category: 'head',
+    },
+    neck: {
+      id: 'neck',
+      anatomicalName: 'Neck',
+      location: 'front',
+      side: 'center',
+      category: 'neck',
+    },
+
+    // Shoulders
+    left_shoulder: {
+      id: 'left_shoulder',
+      anatomicalName: 'Left Shoulder',
+      abbreviation: 'L. Shoulder',
+      location: 'front',
+      side: 'left',
+      category: 'shoulders',
+    },
+    right_shoulder: {
+      id: 'right_shoulder',
+      anatomicalName: 'Right Shoulder',
+      abbreviation: 'R. Shoulder',
+      location: 'front',
+      side: 'right',
+      category: 'shoulders',
+    },
+    left_deltoid: {
+      id: 'left_deltoid',
+      anatomicalName: 'Left Deltoid',
+      abbreviation: 'L. Delt',
+      location: 'front',
+      side: 'left',
+      category: 'shoulders',
+    },
+    right_deltoid: {
+      id: 'right_deltoid',
+      anatomicalName: 'Right Deltoid',
+      abbreviation: 'R. Delt',
+      location: 'front',
+      side: 'right',
+      category: 'shoulders',
+    },
+
+    // Arms
+    left_bicep: {
+      id: 'left_bicep',
+      anatomicalName: 'Left Bicep',
+      abbreviation: 'L. Bicep',
+      location: 'front',
+      side: 'left',
+      category: 'arms',
+    },
+    right_bicep: {
+      id: 'right_bicep',
+      anatomicalName: 'Right Bicep',
+      abbreviation: 'R. Bicep',
+      location: 'front',
+      side: 'right',
+      category: 'arms',
+    },
+    left_tricep: {
+      id: 'left_tricep',
+      anatomicalName: 'Left Tricep',
+      abbreviation: 'L. Tricep',
+      location: 'back',
+      side: 'left',
+      category: 'arms',
+    },
+    right_tricep: {
+      id: 'right_tricep',
+      anatomicalName: 'Right Tricep',
+      abbreviation: 'R. Tricep',
+      location: 'back',
+      side: 'right',
+      category: 'arms',
+    },
+
+    // Forearms
+    left_forearm: {
+      id: 'left_forearm',
+      anatomicalName: 'Left Forearm',
+      abbreviation: 'L. Forearm',
+      location: 'front',
+      side: 'left',
+      category: 'forearms',
+    },
+    right_forearm: {
+      id: 'right_forearm',
+      anatomicalName: 'Right Forearm',
+      abbreviation: 'R. Forearm',
+      location: 'front',
+      side: 'right',
+      category: 'forearms',
+    },
+
+    // Hands
+    left_hand: {
+      id: 'left_hand',
+      anatomicalName: 'Left Hand',
+      abbreviation: 'L. Hand',
+      location: 'front',
+      side: 'left',
+      category: 'hands',
+    },
+    right_hand: {
+      id: 'right_hand',
+      anatomicalName: 'Right Hand',
+      abbreviation: 'R. Hand',
+      location: 'front',
+      side: 'right',
+      category: 'hands',
+    },
+
+    // Chest & Abdomen
+    chest: {
+      id: 'chest',
+      anatomicalName: 'Chest',
+      location: 'front',
+      side: 'center',
+      category: 'chest',
+    },
+    left_breast: {
+      id: 'left_breast',
+      anatomicalName: 'Left Breast',
+      abbreviation: 'L. Breast',
+      location: 'front',
+      side: 'left',
+      category: 'chest',
+    },
+    right_breast: {
+      id: 'right_breast',
+      anatomicalName: 'Right Breast',
+      abbreviation: 'R. Breast',
+      location: 'front',
+      side: 'right',
+      category: 'chest',
+    },
+    abdomen: {
+      id: 'abdomen',
+      anatomicalName: 'Abdomen',
+      location: 'front',
+      side: 'center',
+      category: 'abdomen',
+    },
+
+    // Back
+    upper_back: {
+      id: 'upper_back',
+      anatomicalName: 'Upper Back',
+      location: 'back',
+      side: 'center',
+      category: 'back',
+    },
+    mid_back: {
+      id: 'mid_back',
+      anatomicalName: 'Mid Back',
+      location: 'back',
+      side: 'center',
+      category: 'back',
+    },
+    lower_back: {
+      id: 'lower_back',
+      anatomicalName: 'Lower Back',
+      location: 'back',
+      side: 'center',
+      category: 'lower_back',
+    },
+
+    // Hips & Pelvis
+    left_hip: {
+      id: 'left_hip',
+      anatomicalName: 'Left Hip',
+      abbreviation: 'L. Hip',
+      location: 'front',
+      side: 'left',
+      category: 'pelvis',
+    },
+    right_hip: {
+      id: 'right_hip',
+      anatomicalName: 'Right Hip',
+      abbreviation: 'R. Hip',
+      location: 'front',
+      side: 'right',
+      category: 'pelvis',
+    },
+    left_glute: {
+      id: 'left_glute',
+      anatomicalName: 'Left Gluteal',
+      abbreviation: 'L. Glute',
+      location: 'back',
+      side: 'left',
+      category: 'pelvis',
+    },
+    right_glute: {
+      id: 'right_glute',
+      anatomicalName: 'Right Gluteal',
+      abbreviation: 'R. Glute',
+      location: 'back',
+      side: 'right',
+      category: 'pelvis',
+    },
+
+    // Thighs
+    left_thigh: {
+      id: 'left_thigh',
+      anatomicalName: 'Left Thigh',
+      abbreviation: 'L. Thigh',
+      location: 'front',
+      side: 'left',
+      category: 'thighs',
+    },
+    right_thigh: {
+      id: 'right_thigh',
+      anatomicalName: 'Right Thigh',
+      abbreviation: 'R. Thigh',
+      location: 'front',
+      side: 'right',
+      category: 'thighs',
+    },
+
+    // Knees
+    left_knee: {
+      id: 'left_knee',
+      anatomicalName: 'Left Knee',
+      abbreviation: 'L. Knee',
+      location: 'front',
+      side: 'left',
+      category: 'knees',
+    },
+    right_knee: {
+      id: 'right_knee',
+      anatomicalName: 'Right Knee',
+      abbreviation: 'R. Knee',
+      location: 'front',
+      side: 'right',
+      category: 'knees',
+    },
+
+    // Shins
+    left_shin: {
+      id: 'left_shin',
+      anatomicalName: 'Left Shin',
+      abbreviation: 'L. Shin',
+      location: 'front',
+      side: 'left',
+      category: 'shins',
+    },
+    right_shin: {
+      id: 'right_shin',
+      anatomicalName: 'Right Shin',
+      abbreviation: 'R. Shin',
+      location: 'front',
+      side: 'right',
+      category: 'shins',
+    },
+
+    // Feet
+    left_foot: {
+      id: 'left_foot',
+      anatomicalName: 'Left Foot',
+      abbreviation: 'L. Foot',
+      location: 'front',
+      side: 'left',
+      category: 'feet',
+    },
+    right_foot: {
+      id: 'right_foot',
+      anatomicalName: 'Right Foot',
+      abbreviation: 'R. Foot',
+      location: 'front',
+      side: 'right',
+      category: 'feet',
+    },
+  },
+
+  frontDiagram: [
+    'head',
+    'neck',
+    'left_shoulder',
+    'right_shoulder',
+    'left_deltoid',
+    'right_deltoid',
+    'left_bicep',
+    'right_bicep',
+    'left_forearm',
+    'right_forearm',
+    'left_hand',
+    'right_hand',
+    'chest',
+    'left_breast',
+    'right_breast',
+    'abdomen',
+    'left_hip',
+    'right_hip',
+    'left_thigh',
+    'right_thigh',
+    'left_knee',
+    'right_knee',
+    'left_shin',
+    'right_shin',
+    'left_foot',
+    'right_foot',
+  ],
+
+  backDiagram: [
+    'neck',
+    'left_shoulder',
+    'right_shoulder',
+    'left_deltoid',
+    'right_deltoid',
+    'left_tricep',
+    'right_tricep',
+    'left_forearm',
+    'right_forearm',
+    'left_hand',
+    'right_hand',
+    'upper_back',
+    'mid_back',
+    'lower_back',
+    'left_glute',
+    'right_glute',
+    'left_thigh',
+    'right_thigh',
+    'left_knee',
+    'right_knee',
+    'left_shin',
+    'right_shin',
+    'left_foot',
+    'right_foot',
+  ],
+
+  categories: [
+    'head',
+    'neck',
+    'shoulders',
+    'arms',
+    'forearms',
+    'hands',
+    'chest',
+    'abdomen',
+    'back',
+    'lower_back',
+    'pelvis',
+    'thighs',
+    'knees',
+    'shins',
+    'feet',
+  ],
+
+  version: '1.0',
+};
