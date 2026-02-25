@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePainData } from '../lib/hooks/usePainData';
 import { getTodayString, getReadableDate } from '../lib/dates';
-import { BodyDiagram } from '../components/BodyDiagram';
+import { BodySVGDiagram } from '../components/BodySVGDiagram';
 
 export default function RecorderPage() {
   const { getTodayEntry, recordPain, loading, error, clearError } =
@@ -111,7 +111,7 @@ export default function RecorderPage() {
 
         {/* Body Diagram */}
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-          <BodyDiagram
+          <BodySVGDiagram
             location={activeTab}
             painEntry={todayEntry || undefined}
             onBodyPartSelected={handleBodyPartSelected}
