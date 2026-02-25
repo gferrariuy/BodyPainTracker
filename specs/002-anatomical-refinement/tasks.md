@@ -21,16 +21,20 @@ description: "Task list for Anatomical Refinement - Body Parts Granularity featu
 
 **Purpose**: Project setup and data migration strategy
 
-- [ ] T001 Create backup of existing body-parts.ts and data migration plan in MIGRATION.md
-- [ ] T002 Design 60-region IDs schema document with complete mapping (15 regions × 2 sides × 2 subdivisions)
-- [ ] T003 [P] Plan backward compatibility: map legacy 30-region IDs to new 60-region IDs in src/lib/migration-utils.ts structure
-- [ ] T004 Document subdivision naming conventions (anatomical terms) for all 15 regions in src/lib/body-parts-hierarchy.ts
+**✅ COMPLETE** - Phase 1 finished 2026-02-25
+
+- [x] T001 Create backup of existing body-parts.ts and data migration plan in MIGRATION.md
+- [x] T002 Design 60-region IDs schema document with complete mapping (15 regions × 2 sides × 2 subdivisions)
+- [x] T003 [P] Plan backward compatibility: map legacy 30-region IDs to new 60-region IDs in src/lib/migration-utils.ts structure
+- [x] T004 Document subdivision naming conventions (anatomical terms) for all 15 regions in src/lib/body-parts-hierarchy.ts
 
 ---
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
 **Purpose**: Core infrastructure for 60-region catalog system
+
+**🔄 IN PROGRESS** - Started 2026-02-25
 
 **⚠️ CRITICAL**: Must complete before user story implementation
 
