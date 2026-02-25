@@ -1,6 +1,7 @@
 import { PainEntry, StatisticsRecord, TimePeriod } from './data-models';
 import { calculatePeriodBounds, getDatesBetween } from './dates';
-import { bodyPartCatalog } from './body-parts';
+import { bodyPartCatalogRefined } from './body-parts-refined';
+import { getRegionDisplayName } from './body-parts-utils';
 
 /**
  * Aggregation and statistics calculation utilities
@@ -45,10 +46,13 @@ export function rankByTotalIntensity(
 ): StatisticsRecord[] {
   const records: StatisticsRecord[] = Object.entries(aggregated).map(
     ([bodyPartId, data]) => {
-      const bodyPart = bodyPartCatalog.parts[bodyPartId];
+      // Try refined catalog first (60-region IDs), fallback to legacy catalog
+      const bodyPart = bodyPartCatalogRefined.parts[bodyPartId];
+      const displayName = bodyPart?.anatomicalName || getRegionDisplayName(bodyPartId) || bodyPartId;
+      
       return {
         bodyPartId,
-        bodyPartName: bodyPart.anatomicalName,
+        bodyPartName: displayName,
         totalIntensity: data.totalIntensity,
         frequency: data.frequency,
         averageIntensity: Number(
