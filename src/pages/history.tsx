@@ -5,10 +5,17 @@ import Link from 'next/link';
 import { usePainData } from '../lib/hooks/usePainData';
 import { getReadableDate } from '../lib/dates';
 import { bodyPartCatalog } from '../lib/body-parts';
+import { PainTypeLabels } from '../lib/types/painType';
+import { PainEntryEditor } from '../components/PainEntryEditor';
+import type { PainTypeCode } from '../lib/types/painType';
 
 export default function HistoryPage() {
-  const { getAllEntries, removePain, loading } = usePainData();
+  const { getAllEntries, removePain, updatePain, loading } = usePainData();
   const [expandedDate, setExpandedDate] = useState<string | null>(null);
+  const [editingEntry, setEditingEntry] = useState<{
+    date: string;
+    bodyPartId: string;
+  } | null>(null);
 
   const entries = getAllEntries();
 
@@ -19,6 +26,21 @@ export default function HistoryPage() {
   const handleDelete = (date: string, bodyPartId: string) => {
     if (confirm(`Delete pain record for ${bodyPartCatalog.parts[bodyPartId]?.anatomicalName} on ${getReadableDate(date)}?`)) {
       removePain(date, bodyPartId);
+    }
+  };
+
+  const handleEdit = (date: string, bodyPartId: string) => {
+    setEditingEntry({ date, bodyPartId });
+  };
+
+  const handleSaveEdit = (intensity: number, painType: PainTypeCode) => {
+    if (editingEntry) {
+      try {
+        updatePain(editingEntry.date, editingEntry.bodyPartId, intensity, painType);
+        setEditingEntry(null);
+      } catch (err) {
+        alert(`Error updating record: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      }
     }
   };
 
@@ -160,23 +182,41 @@ export default function HistoryPage() {
                               key={bodyPartId}
                               className={`flex items-center justify-between p-3 rounded border ${getColor()}`}
                             >
-                              <div>
+                              <div className="flex-1">
                                 <p className="font-semibold">
                                   {bodyPart?.anatomicalName}
                                 </p>
                                 <p className="text-sm opacity-75">
-                                  Intensity: {bp.intensityLevel}/10
+                                  Intensidad: {bp.intensityLevel}/10
                                 </p>
+                                {bp.painType && bp.painType !== 'unknown' && (
+                                  <p className="text-sm opacity-75">
+                                    Tipo: {PainTypeLabels[bp.painType]}
+                                  </p>
+                                )}
                               </div>
-                              <button
-                                onClick={() =>
-                                  handleDelete(entry.date, bodyPartId)
-                                }
-                                className="text-sm opacity-75 hover:opacity-100 font-semibold"
-                                aria-label={`Delete ${bodyPart?.anatomicalName}`}
-                              >
-                                ✕
-                              </button>
+                              <div className="flex gap-1 ml-2">
+                                <button
+                                  onClick={() =>
+                                    handleEdit(entry.date, bodyPartId)
+                                  }
+                                  className="text-sm opacity-75 hover:opacity-100 font-semibold px-2 py-1"
+                                  aria-label={`Edit ${bodyPart?.anatomicalName}`}
+                                  title="Editar"
+                                >
+                                  ✎
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    handleDelete(entry.date, bodyPartId)
+                                  }
+                                  className="text-sm opacity-75 hover:opacity-100 font-semibold"
+                                  aria-label={`Delete ${bodyPart?.anatomicalName}`}
+                                  title="Eliminar"
+                                >
+                                  ✕
+                                </button>
+                              </div>
                             </div>
                           );
                         }
@@ -191,6 +231,24 @@ export default function HistoryPage() {
                         Eliminar Todo para Este Día
                       </button>
                     </div>
+
+                    {editingEntry && editingEntry.date === entry.date && (
+                      <div className="mt-4 border-t border-gray-200 pt-4">
+                        <PainEntryEditor
+                          bodyPartId={editingEntry.bodyPartId}
+                          initialIntensity={
+                            entry.bodyPartEntries[editingEntry.bodyPartId]
+                              ?.intensityLevel || 5
+                          }
+                          initialPainType={
+                            (entry.bodyPartEntries[editingEntry.bodyPartId]
+                              ?.painType as PainTypeCode) || 'unknown'
+                          }
+                          onSave={handleSaveEdit}
+                          onCancel={() => setEditingEntry(null)}
+                        />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
