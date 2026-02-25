@@ -8,15 +8,17 @@ A modern, interactive web application for tracking and visualizing daily body pa
 
 - **60-Region Anatomical Precision** - Interactive diagrams (front/back views) with 30 primary regions, each split into 2 subdivisions for granular pain tracking
 - **2-Stage Recording UX** - Click primary region → Select subdivision → Set intensity (1-10)
+- **Pain Type Classification** - Classify pain during recording with 8 pain type options: Pulsátil, Ardor, Eléctrico, Punzante, Profundo, Rigidez, Sensibilidad al tacto, or Unknown
 - **Body Pain Recorder** - Front and back view diagrams with intelligent region visibility (e.g., gluteal back-only, groin front-only)
 - **Pain Intensity Slider** - Rate pain from 1-10 with real-time visual feedback and anatomical region name display
-- **Statistics Dashboard** - View top 10 most painful sub-regions with aggregated data and rankings (now separated by subdivision)
-- **Pain History** - Chronological log of all pain entries with full anatomical names, editing, and deletion
+- **Statistics Dashboard** - View top 10 most painful sub-regions with aggregated data and rankings (now separated by subdivision). Filter by pain type to analyze specific pain patterns
+- **Pain History** - Chronological log of all pain entries with full anatomical names, display of pain type, editing, and deletion
 - **Time Period Filtering** - Analyze pain patterns over "This Week" (7 days) or "This Month" (30 days)
 
 ### ✨ Technical Highlights
 
 - **60-Region Catalog** - Complete anatomical hierarchy: 15 primary regions × 2 sides × 2 subdivisions
+- **Pain Type System** - 8 pain type classifications for detailed pain characterization
 - **Manual Data Migration** - Optional one-time migration from legacy 30-region system with user confirmation
 - **Static Web Application** - No backend required; runs entirely in the browser
 - **Browser Storage** - Data persists in localStorage with automatic cleanup when quota exceeded
@@ -125,8 +127,9 @@ npx http-server out
    - **1-3**: Mild pain (yellow)
    - **4-6**: Moderate pain (orange)
    - **7-10**: Severe pain (red)
-5. **Click Confirm** to save the entry
-6. **Track your recordings** in the summary box
+5. **Select pain type** from available options (Pulsátil, Ardor, Eléctrico, Punzante, Profundo, Rigidez, Sensibilidad al tacto, or Unknown)
+6. **Click Confirm** to save the entry
+7. **Track your recordings** in the summary box
 
 ### Viewing Statistics
 
@@ -134,11 +137,12 @@ npx http-server out
 2. **Select a time period**:
    - "This Week" = Last 7 days
    - "This Month" = Last 30 days
-3. **Review top 10** most painful areas ranked by:
+3. **Filter by pain type** (optional): Select a specific pain type to view statistics for only that pain type, or "All" for combined statistics
+4. **Review top 10** most painful areas ranked by:
    - Total intensity sum
    - Frequency of occurrences
    - Average pain level
-4. **Visual indicators**: Medal emojis (🥇🥈🥉) and color-coded cards
+5. **Visual indicators**: Medal emojis (🥇🥈🥉) and color-coded cards
 
 ### Viewing History
 
@@ -162,11 +166,13 @@ Data is stored in browser localStorage under the key `painTracker`:
       "left_deltoid": {
         "bodyPartId": "left_deltoid",
         "intensityLevel": 7,
+        "painType": "burning",
         "recordedAt": "2026-02-24T14:30:00.000Z"
       },
       "lower_back": {
         "bodyPartId": "lower_back",
         "intensityLevel": 5,
+        "painType": "unknown",
         "recordedAt": "2026-02-24T14:32:00.000Z"
       }
     },
@@ -175,6 +181,8 @@ Data is stored in browser localStorage under the key `painTracker`:
   }
 }
 ```
+
+**Pain Type Values**: `pulsatile`, `burning`, `electric`, `sharp`, `deep`, `stiffness`, `tenderness`, `unknown` (default for backward compatibility)
 
 ### Automatic Cleanup
 
