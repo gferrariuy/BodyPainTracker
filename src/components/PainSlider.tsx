@@ -1,13 +1,16 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { getRegionDisplayName } from "../lib/body-parts-utils";
 
 interface PainSliderProps {
   value: number;
   onChange: (value: number) => void;
   onConfirm: () => void;
   onCancel: () => void;
-  bodyPartName: string;
+  // Accept either a pre-rendered name or a 60-region id
+  bodyPartName?: string;
+  regionId?: string;
 }
 
 export function PainSlider({
@@ -16,8 +19,11 @@ export function PainSlider({
   onConfirm,
   onCancel,
   bodyPartName,
+  regionId,
 }: PainSliderProps) {
   const [localValue, setLocalValue] = useState(value);
+
+  const displayName = bodyPartName || (regionId ? getRegionDisplayName(regionId) : 'Región');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value);
@@ -58,7 +64,7 @@ export function PainSlider({
         onClick={(e) => e.stopPropagation()}
       >
         <h2 id="slider-title" className="text-lg font-bold mb-2">
-          {bodyPartName}
+          {displayName}
         </h2>
         <p className="text-gray-600 text-sm mb-4">
           Califica tu intensidad de dolor de 1 a 10
