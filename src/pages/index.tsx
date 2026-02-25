@@ -8,6 +8,7 @@ import { BodySVGDiagram } from '../components/BodySVGDiagram';
 import { getRegionDisplayName } from '../lib/body-parts-utils';
 import { bodyPartCatalogRefined } from '../lib/body-parts-refined';
 import { PainTypeLabels } from '../lib/types/painType';
+import type { PainTypeCode } from '../lib/types/painType';
 import { MigrationNotification } from '../components/MigrationNotification';
 
 export default function RecorderPage() {
@@ -20,7 +21,7 @@ export default function RecorderPage() {
   const today = getTodayString();
   const todayReadable = getReadableDate(today);
 
-  const handleBodyPartSelected = (bodyPartId: string, intensity: number, painType: string) => {
+  const handleBodyPartSelected = (bodyPartId: string, intensity: number, painType: PainTypeCode) => {
     try {
       setLocalError(null);
       recordPain(bodyPartId, intensity, painType);
