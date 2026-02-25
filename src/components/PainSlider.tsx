@@ -2,11 +2,13 @@
 
 import React, { useState } from "react";
 import { getRegionDisplayName } from "../lib/body-parts-utils";
+import { PainTypeSelector } from "./PainTypeSelector";
+import type { PainTypeCode } from "../lib/types/painType";
 
 interface PainSliderProps {
   value: number;
   onChange: (value: number) => void;
-  onConfirm: () => void;
+  onConfirm: (painType: PainTypeCode) => void;
   onCancel: () => void;
   // Accept either a pre-rendered name or a 60-region id
   bodyPartName?: string;
@@ -22,6 +24,7 @@ export function PainSlider({
   regionId,
 }: PainSliderProps) {
   const [localValue, setLocalValue] = useState(value);
+  const [selectedPainType, setSelectedPainType] = useState<PainTypeCode | undefined>();
 
   const displayName = bodyPartName || (regionId ? getRegionDisplayName(regionId) : 'Región');
 
@@ -29,6 +32,13 @@ export function PainSlider({
     const newValue = Number(e.target.value);
     setLocalValue(newValue);
     onChange(newValue);
+  };
+
+  const handleConfirm = () => {
+    if (!selectedPainType) {
+      return; // Button disabled, but safety check
+    }
+    onConfirm(selectedPainType);
   };
 
   const getIntensityTextES = () => {
@@ -107,6 +117,13 @@ export function PainSlider({
           </div>
         </div>
 
+        {/* Pain Type Selector */}
+        <PainTypeSelector
+          selectedType={selectedPainType}
+          onChange={setSelectedPainType}
+          language="es"
+        />
+
         <div className="flex gap-3">
           <button
             onClick={onCancel}
@@ -116,9 +133,14 @@ export function PainSlider({
             Cancelar
           </button>
           <button
-            onClick={onConfirm}
-            className="flex-1 px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition font-medium"
-            aria-label="Confirmar nivel de dolor"
+            onClick={handleConfirm}
+            disabled={!selectedPainType}
+            className={`flex-1 px-4 py-2 rounded-lg transition font-medium ${
+              selectedPainType
+                ? 'text-white bg-blue-600 hover:bg-blue-700'
+                : 'text-gray-400 bg-gray-300 cursor-not-allowed'
+            }`}
+            aria-label={selectedPainType ? "Confirmar nivel de dolor" : "Selecciona tipo de dolor"}
           >
             Confirmar
           </button>

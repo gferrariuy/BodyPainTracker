@@ -11,11 +11,12 @@ import {
   mapToLegacyDiagramId,
 } from '../lib/body-parts-utils';
 import { PainEntry } from '../lib/data-models';
+import type { PainTypeCode } from '../lib/types/painType';
 
 interface BodySVGDiagramProps {
   location: 'front' | 'back';
   painEntry?: PainEntry;
-  onBodyPartSelected: (bodyPartId: string, intensity: number) => void;
+  onBodyPartSelected: (bodyPartId: string, intensity: number, painType: PainTypeCode) => void;
 }
 
 interface BodyPartPosition {
@@ -146,9 +147,9 @@ export function BodySVGDiagram({
     setSliderValue(existingEntry?.intensityLevel || 5);
   };
 
-  const handleSliderConfirm = () => {
+  const handleSliderConfirm = (painType: PainTypeCode) => {
     if (selectedBodyPartId) {
-      onBodyPartSelected(selectedBodyPartId, sliderValue);
+      onBodyPartSelected(selectedBodyPartId, sliderValue, painType);
       setSelectedBodyPartId(null);
     }
   };
