@@ -1,12 +1,14 @@
 import { BodyPartEntry, PainEntry } from './data-models';
 import { bodyPartCatalog } from './body-parts';
+import { bodyPartCatalogRefined } from './body-parts-refined';
 
 /**
  * Validation utilities for pain tracker
  */
 
 export function isValidBodyPartId(id: string): boolean {
-  return id in bodyPartCatalog.parts;
+  // Accept both legacy 30-region IDs and new 60-region IDs
+  return id in bodyPartCatalog.parts || id in bodyPartCatalogRefined.parts;
 }
 
 export function isValidIntensityLevel(level: number): boolean {

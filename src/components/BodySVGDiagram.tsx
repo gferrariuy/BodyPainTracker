@@ -8,6 +8,7 @@ import { bodyPartCatalogRefined } from '../lib/body-parts-refined';
 import {
   getRegionVariantsForSide,
   getPrimaryRegionFromId,
+  mapToLegacyDiagramId,
 } from '../lib/body-parts-utils';
 import { PainEntry } from '../lib/data-models';
 
@@ -225,7 +226,22 @@ export function BodySVGDiagram({
 
           {/* Body part circles (clickable areas) */}
           {bodyParts.map((part) => {
-            const intensity = painEntry?.bodyPartEntries[part.id]?.intensityLevel;
+            // Find all entries that map to this legacy diagram ID
+            let intensity: number | undefined;
+            if (painEntry?.bodyPartEntries) {
+              const mappedIntensities: number[] = [];
+              for (const [regionId, entry] of Object.entries(painEntry.bodyPartEntries)) {
+                const legacyId = mapToLegacyDiagramId(regionId);
+                if (legacyId === part.id) {
+                  mappedIntensities.push(entry.intensityLevel);
+                }
+              }
+              // Use the maximum intensity from all mapped entries
+              if (mappedIntensities.length > 0) {
+                intensity = Math.max(...mappedIntensities);
+              }
+            }
+
             const color = getColorForIntensity(intensity);
             const isSelected = selectedBodyPartId === part.id;
 

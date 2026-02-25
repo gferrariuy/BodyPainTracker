@@ -179,3 +179,121 @@ export function getPrimaryRegionsForView(view: 'front' | 'back'): string[] {
   
   return Array.from(primaryRegions).sort();
 }
+
+/**
+ * Map a 60-region ID to the legacy diagram ID for visualization
+ * Example: "shoulder_left_superior" → "left_shoulder"
+ *          "shoulder_left_inferior" → "left_deltoid"
+ *          "head" (legacy) → "head"
+ */
+export function mapToLegacyDiagramId(regionId: string): string {
+  // Check if it's already a legacy ID
+  if (!regionId.includes('_') || regionId.split('_').length < 3) {
+    return regionId; // Already legacy or special case (head, neck)
+  }
+
+  // Map 60-region IDs to legacy diagram zones
+  const mappings: Record<string, string> = {
+    // Shoulder variants → legacy diagram zones
+    shoulder_left_superior: 'left_shoulder',
+    shoulder_left_inferior: 'left_deltoid',
+    shoulder_right_superior: 'right_shoulder',
+    shoulder_right_inferior: 'right_deltoid',
+
+    // Arm variants (proximal/distal)
+    arm_left_proximal: 'left_bicep',
+    arm_left_distal: 'left_bicep',
+    arm_right_proximal: 'right_bicep',
+    arm_right_distal: 'right_bicep',
+
+    // Forearm variants (anterolateral/posterolateral)
+    forearm_left_anterolateral: 'left_forearm',
+    forearm_left_posterolateral: 'left_forearm',
+    forearm_right_anterolateral: 'right_forearm',
+    forearm_right_posterolateral: 'right_forearm',
+
+    // Hand variants (palma/dorso)
+    hand_left_palma: 'left_hand',
+    hand_left_dorso: 'left_hand',
+    hand_right_palma: 'right_hand',
+    hand_right_dorso: 'right_hand',
+
+    // Thigh variants (anterior/posterior)
+    thigh_left_anterior: 'left_thigh',
+    thigh_left_posterior: 'left_thigh',
+    thigh_right_anterior: 'right_thigh',
+    thigh_right_posterior: 'right_thigh',
+
+    // Knee variants (lateral/medial)
+    knee_left_lateral: 'left_knee',
+    knee_left_medial: 'left_knee',
+    knee_right_lateral: 'right_knee',
+    knee_right_medial: 'right_knee',
+
+    // Shin variants (anterior/posterior)
+    shin_left_anterior: 'left_shin',
+    shin_left_posterior: 'left_shin',
+    shin_right_anterior: 'right_shin',
+    shin_right_posterior: 'right_shin',
+
+    // Foot variants (dorso/planta)
+    foot_left_dorso: 'left_foot',
+    foot_left_planta: 'left_foot',
+    foot_right_dorso: 'right_foot',
+    foot_right_planta: 'right_foot',
+
+    // Ankle variants (anterolateral/posterolateral) - map to foot
+    ankle_left_anterolateral: 'left_foot',
+    ankle_left_posterolateral: 'left_foot',
+    ankle_right_anterolateral: 'right_foot',
+    ankle_right_posterolateral: 'right_foot',
+
+    // Back-only regions
+    dorsal_left_superior: 'upper_back',
+    dorsal_left_inferior: 'mid_back',
+    dorsal_right_superior: 'upper_back',
+    dorsal_right_inferior: 'mid_back',
+
+    lumbar_left_superior: 'lower_back',
+    lumbar_left_inferior: 'lower_back',
+    lumbar_right_superior: 'lower_back',
+    lumbar_right_inferior: 'lower_back',
+
+    gluteal_left_superior: 'left_glute',
+    gluteal_left_inferior: 'left_glute',
+    gluteal_right_superior: 'right_glute',
+    gluteal_right_inferior: 'right_glute',
+
+    // Neck variants (all map to 'neck')
+    neck_left_anterior: 'neck',
+    neck_left_posterior: 'neck',
+    neck_right_anterior: 'neck',
+    neck_right_posterior: 'neck',
+
+    // Hip/Sacroiliac variants
+    sacroiliac_left_superior: 'left_hip',
+    sacroiliac_left_inferior: 'left_hip',
+    sacroiliac_right_superior: 'right_hip',
+    sacroiliac_right_inferior: 'right_hip',
+
+    // Groin (front only) - map to hip
+    groin_left_medial: 'left_hip',
+    groin_left_lateral: 'left_hip',
+    groin_right_medial: 'right_hip',
+    groin_right_lateral: 'right_hip',
+
+    // Chest variants
+    chest_left_superior: 'chest',
+    chest_left_inferior: 'chest',
+    chest_right_superior: 'chest',
+    chest_right_inferior: 'chest',
+
+    // Abdomen variants
+    abdomen_left_superior: 'abdomen',
+    abdomen_left_inferior: 'abdomen',
+    abdomen_right_superior: 'abdomen',
+    abdomen_right_inferior: 'abdomen',
+  };
+
+  return mappings[regionId] || regionId;
+}
