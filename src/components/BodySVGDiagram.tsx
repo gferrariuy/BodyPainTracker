@@ -2,7 +2,13 @@
 
 import React, { useState } from 'react';
 import { PainSlider } from './PainSlider';
+import SubdivisionSelector from './SubdivisionSelector';
 import { bodyPartCatalog } from '../lib/body-parts';
+import { bodyPartCatalogRefined } from '../lib/body-parts-refined';
+import {
+  getRegionVariantsForSide,
+  getPrimaryRegionFromId,
+} from '../lib/body-parts-utils';
 import { PainEntry } from '../lib/data-models';
 
 interface BodySVGDiagramProps {
@@ -77,11 +83,63 @@ export function BodySVGDiagram({
     null
   );
   const [sliderValue, setSliderValue] = useState(5);
+  const [showSubdivisionSelector, setShowSubdivisionSelector] = useState(false);
+  const [subdivisionsOptions, setSubdivisionsOptions] = useState<{
+    id: string;
+    labelEs: string;
+  }[]>([]);
+  const [pendingPrimaryRegion, setPendingPrimaryRegion] = useState<{
+    primary: string;
+    side: 'left' | 'right';
+  } | null>(null);
 
   const bodyParts =
     location === 'front' ? FRONT_BODY_PARTS : BACK_BODY_PARTS;
 
   const handleBodyPartClick = (bodyPartId: string) => {
+    // Derive primary region and side from legacy catalog when possible
+    const legacy = bodyPartCatalog.parts[bodyPartId];
+    const side = (legacy?.side as 'left' | 'right') || 'left';
+
+    // Attempt to get primary region from refined utilities; fallback to category
+    let primary = getPrimaryRegionFromId(bodyPartId) || '';
+    if (!primary) {
+      // Map common legacy categories to primary region keys
+      const category = legacy?.category || '';
+      const map: Record<string, string> = {
+        shoulders: 'shoulder',
+        arms: 'arm',
+        forearms: 'forearm',
+        hands: 'hand',
+        back: 'dorsal',
+        lower_back: 'lumbar',
+        pelvis: 'sacroiliac',
+        thighs: 'thigh',
+        knees: 'knee',
+        shins: 'shin',
+        feet: 'foot',
+      };
+      primary = map[category] || category || bodyPartId.split('_').slice(1).join('_');
+    }
+
+    // Build subdivision options for this primary region and side
+    const variants = getRegionVariantsForSide(primary, side);
+    const options = variants.map((vid) => {
+      const info = bodyPartCatalogRefined.parts[vid];
+      // labelEs: text after '-' if present, otherwise full name
+      const parts = info?.anatomicalName?.split('-') || [vid];
+      const labelEs = parts.length > 1 ? parts[1].trim() : info?.anatomicalName || vid;
+      return { id: vid, labelEs };
+    });
+
+    if (options.length > 0) {
+      setSubdivisionsOptions(options);
+      setPendingPrimaryRegion({ primary, side });
+      setShowSubdivisionSelector(true);
+      return;
+    }
+
+    // Fallback: open slider directly for clicked id
     const existingEntry = painEntry?.bodyPartEntries[bodyPartId];
     setSelectedBodyPartId(bodyPartId);
     setSliderValue(existingEntry?.intensityLevel || 5);
@@ -212,16 +270,32 @@ export function BodySVGDiagram({
         </div>
       </div>
 
+      {showSubdivisionSelector && pendingPrimaryRegion && (
+        <SubdivisionSelector
+          primaryRegionId={pendingPrimaryRegion.primary}
+          subdivisions={subdivisionsOptions.map((s) => ({ id: s.id, labelEs: s.labelEs }))}
+          onSelect={(subId) => {
+            // Open slider for selected subdivision
+            const existingEntry = painEntry?.bodyPartEntries[subId];
+            setSelectedBodyPartId(subId);
+            setSliderValue(existingEntry?.intensityLevel || 5);
+            setShowSubdivisionSelector(false);
+            setPendingPrimaryRegion(null);
+          }}
+          onCancel={() => {
+            setShowSubdivisionSelector(false);
+            setPendingPrimaryRegion(null);
+          }}
+        />
+      )}
+
       {selectedBodyPartId && (
         <PainSlider
           value={sliderValue}
           onChange={setSliderValue}
           onConfirm={handleSliderConfirm}
           onCancel={handleSliderCancel}
-          bodyPartName={
-            bodyPartCatalog.parts[selectedBodyPartId]?.anatomicalName ||
-            'Parte del Cuerpo'
-          }
+          regionId={selectedBodyPartId}
         />
       )}
     </div>
