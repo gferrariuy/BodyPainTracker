@@ -30,7 +30,7 @@ Phase 5: User Story 3 - Editar registro para corregir tipo (Priority: P3)
 
 Final Phase: Polish & Docs
 
-- [ ] T012 Update `README.md` and add `specs/1-add-pain-type/MIGRATION-NOTES.md` documenting new field, migration strategy, and UI changes
+- [X] T012 Update `README.md` and add `specs/1-add-pain-type/MIGRATION-NOTES.md` documenting new field, migration strategy, and UI changes
 
 Dependencies:
 
