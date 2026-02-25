@@ -14,54 +14,65 @@ import {
   isMigrationNeeded,
   migrateAllLegacyEntries,
   createMigrationBackup,
+  getMigrationSummary,
 } from '../migrate-pain-data';
 
 export function usePainData() {
   const [entries, setEntries] = useState<Record<string, PainEntry>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [migrationStatus, setMigrationStatus] = useState<'pending' | 'migrated' | 'no-migration' | 'error'>('pending');
+  const [migrationStatus, setMigrationStatus] = useState<'pending' | 'needs-migration' | 'migrated' | 'no-migration' | 'error'>('pending');
+  const [migrationSummary, setMigrationSummary] = useState<any | null>(null);
 
-  // Load data on mount and perform migration if needed
+  // Load data on mount and detect if migration is needed (do NOT auto-migrate)
   useEffect(() => {
     try {
-      let data = loadPainTrackerData();
-      
-      // Check if migration is needed
+      const data = loadPainTrackerData();
+
+      // Compute migration summary and set status if legacy data present
       if (isMigrationNeeded(data)) {
-        console.log('🔄 Migration needed - converting 30-region to 60-region system');
-        
         try {
-          // Create backup before migration
-          const backupJson = createMigrationBackup(data);
-          sessionStorage.setItem('painDataBackup', backupJson);
-          
-          // Perform migration
-          const { migratedEntries, migrationType, stats } = migrateAllLegacyEntries(data);
-          
-          console.log(`✅ Migration complete: ${migrationType}`, stats);
-          
-          data = migratedEntries;
-          setMigrationStatus(migrationType === 'no-migration' ? 'no-migration' : 'migrated');
-          
-          // Save migrated data back to localStorage
-          savePainTrackerData(data);
-        } catch (migrationError) {
-          console.error('❌ Migration error:', migrationError);
-          setMigrationStatus('error');
-          setError(`Migration failed: ${migrationError instanceof Error ? migrationError.message : 'Unknown error'}`);
-          // Keep original data if migration fails
+          const summary = getMigrationSummary(data);
+          setMigrationSummary(summary);
+        } catch (e) {
+          console.warn('Failed to compute migration summary', e);
         }
+
+        // Do NOT perform migration automatically; mark as needs-migration
+        setMigrationStatus('needs-migration');
       } else {
         setMigrationStatus('no-migration');
       }
-      
+
       setEntries(data);
     } catch (err) {
       setError('Failed to load pain data');
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  }, []);
+
+  // Manual migration trigger: call this when user chooses to migrate
+  const performMigration = useCallback(() => {
+    try {
+      const current = loadPainTrackerData();
+
+      // Create backup before migration
+      const backupJson = createMigrationBackup(current);
+      sessionStorage.setItem('painDataBackup', backupJson);
+
+      const { migratedEntries, migrationType, stats } = migrateAllLegacyEntries(current);
+      console.log(`✅ Migration complete: ${migrationType}`, stats);
+
+      // Save migrated data back to localStorage and update state
+      savePainTrackerData(migratedEntries);
+      setEntries(migratedEntries);
+      setMigrationStatus(migrationType === 'no-migration' ? 'no-migration' : 'migrated');
+    } catch (migrationError) {
+      console.error('❌ Migration error:', migrationError);
+      setMigrationStatus('error');
+      setError(`Migration failed: ${migrationError instanceof Error ? migrationError.message : 'Unknown error'}`);
     }
   }, []);
 
@@ -146,6 +157,8 @@ export function usePainData() {
     loading,
     error,
     migrationStatus,
+    migrationSummary,
+    performMigration,
     recordPain,
     updatePain,
     removePain,
@@ -153,5 +166,6 @@ export function usePainData() {
     getEntryByDate,
     getAllEntries,
     clearError: () => setError(null),
+    acknowledgeMigration: () => setMigrationStatus('no-migration'),
   };
 }

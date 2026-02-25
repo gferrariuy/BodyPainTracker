@@ -7,9 +7,10 @@ import { getTodayString, getReadableDate } from '../lib/dates';
 import { BodySVGDiagram } from '../components/BodySVGDiagram';
 import { getRegionDisplayName } from '../lib/body-parts-utils';
 import { bodyPartCatalogRefined } from '../lib/body-parts-refined';
+import { MigrationNotification } from '../components/MigrationNotification';
 
 export default function RecorderPage() {
-  const { getTodayEntry, recordPain, loading, error, clearError } =
+  const { getTodayEntry, recordPain, loading, error, clearError, migrationStatus, performMigration } =
     usePainData();
   const [activeTab, setActiveTab] = useState<'front' | 'back'>('front');
   const [localError, setLocalError] = useState<string | null>(null);
@@ -47,6 +48,12 @@ export default function RecorderPage() {
 
   return (
     <main className="min-h-screen py-8">
+      <MigrationNotification
+        status={migrationStatus}
+        error={error || undefined}
+        onDismiss={() => clearError()}
+        onMigrate={() => performMigration()}
+      />
       <div className="max-w-4xl mx-auto px-4">
         {/* Header */}
         <div className="mb-8">
