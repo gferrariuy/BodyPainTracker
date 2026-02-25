@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { usePainData } from '../lib/hooks/usePainData';
 import { getTodayString, getReadableDate } from '../lib/dates';
 import { BodySVGDiagram } from '../components/BodySVGDiagram';
+import { getRegionDisplayName } from '../lib/body-parts-utils';
+import { bodyPartCatalogRefined } from '../lib/body-parts-refined';
 
 export default function RecorderPage() {
   const { getTodayEntry, recordPain, loading, error, clearError } =
@@ -127,17 +129,17 @@ export default function RecorderPage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
               {Object.entries(todayEntry.bodyPartEntries).map(
                 ([bodyPartId, entry]) => {
-                  const bodyPart =
-                    require('../lib/body-parts').bodyPartCatalog.parts[
-                      bodyPartId
-                    ];
+                  const refined = bodyPartCatalogRefined.parts[bodyPartId];
+                  const legacy = require('../lib/body-parts').bodyPartCatalog.parts[bodyPartId];
+                  const label = refined?.abbreviation || refined?.anatomicalName || legacy?.abbreviation || getRegionDisplayName(bodyPartId);
+
                   return (
                     <div
                       key={bodyPartId}
                       className="p-3 rounded bg-white border border-green-200"
                     >
                       <p className="text-sm font-semibold text-gray-800">
-                        {bodyPart?.abbreviation || bodyPart?.anatomicalName}
+                        {label}
                       </p>
                       <p className="text-sm text-gray-600">
                         {entry.intensityLevel}/10
