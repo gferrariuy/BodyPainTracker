@@ -5,14 +5,17 @@ import Link from 'next/link';
 import { usePainData } from '../lib/hooks/usePainData';
 import { calculateStatistics } from '../lib/aggregation';
 import { TimePeriod } from '../lib/data-models';
+import { PainTypeFilter } from '../components/PainTypeFilter';
+import type { PainTypeCode } from '../lib/types/painType';
 
 export default function StatisticsPage() {
   const { entries, loading } = usePainData();
   const [period, setPeriod] = useState<TimePeriod>('week');
+  const [painTypeFilter, setPainTypeFilter] = useState<PainTypeCode | 'all'>('all');
 
   const stats = useMemo(() => {
-    return calculateStatistics(entries, period);
-  }, [entries, period]);
+    return calculateStatistics(entries, period, painTypeFilter === 'all' ? undefined : painTypeFilter);
+  }, [entries, period, painTypeFilter]);
 
   const getColorClass = (ranking: number) => {
     if (ranking === 1) return 'bg-yellow-100 border-yellow-300';
@@ -80,6 +83,13 @@ export default function StatisticsPage() {
           </button>
         </div>
 
+        {/* Pain Type Filter */}
+        <PainTypeFilter
+          selectedType={painTypeFilter}
+          onChange={setPainTypeFilter}
+          language="es"
+        />
+
         {/* Stats Title */}
         <div className="mb-6">
           <h2 className="text-xl font-bold text-gray-800">
@@ -91,7 +101,8 @@ export default function StatisticsPage() {
         {stats.length === 0 ? (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-8 text-center">
             <p className="text-blue-900 text-lg">
-              Aún no hay datos de dolor registrados para {period === 'week' ? 'esta semana' : 'este mes'}.
+              Aún no hay datos de dolor registrados para {period === 'week' ? 'esta semana' : 'este mes'}
+              {painTypeFilter !== 'all' ? ` con tipo "${painTypeFilter}"` : ''}.
             </p>
             <p className="text-blue-700 mt-2">
               Comienza a registrar tu dolor para ver estadísticas.

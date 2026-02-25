@@ -2,6 +2,7 @@ import { PainEntry, StatisticsRecord, TimePeriod } from './data-models';
 import { calculatePeriodBounds, getDatesBetween } from './dates';
 import { bodyPartCatalogRefined } from './body-parts-refined';
 import { getRegionDisplayName } from './body-parts-utils';
+import type { PainTypeCode } from './types/painType';
 
 /**
  * Aggregation and statistics calculation utilities
@@ -19,7 +20,8 @@ export function filterEntriesByPeriod(
 }
 
 export function aggregateByBodyPart(
-  entries: PainEntry[]
+  entries: PainEntry[],
+  painTypeFilter?: PainTypeCode | 'all'
 ): Record<string, { totalIntensity: number; frequency: number }> {
   const aggregated: Record<
     string,
@@ -30,6 +32,13 @@ export function aggregateByBodyPart(
     for (const [bodyPartId, bodyPartEntry] of Object.entries(
       entry.bodyPartEntries
     )) {
+      // Apply painType filter if specified
+      if (painTypeFilter && painTypeFilter !== 'all') {
+        if (bodyPartEntry.painType !== painTypeFilter) {
+          continue;
+        }
+      }
+
       if (!aggregated[bodyPartId]) {
         aggregated[bodyPartId] = { totalIntensity: 0, frequency: 0 };
       }
@@ -76,7 +85,8 @@ export function rankByTotalIntensity(
 
 export function calculateStatistics(
   entries: Record<string, PainEntry>,
-  period: TimePeriod
+  period: TimePeriod,
+  painTypeFilter?: PainTypeCode | 'all'
 ): StatisticsRecord[] {
   const filteredEntries = filterEntriesByPeriod(entries, period);
 
@@ -84,7 +94,7 @@ export function calculateStatistics(
     return [];
   }
 
-  const aggregated = aggregateByBodyPart(filteredEntries);
+  const aggregated = aggregateByBodyPart(filteredEntries, painTypeFilter);
   const ranked = rankByTotalIntensity(aggregated);
 
   // Return top 10
