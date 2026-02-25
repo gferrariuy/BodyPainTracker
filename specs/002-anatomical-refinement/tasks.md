@@ -34,32 +34,30 @@ description: "Task list for Anatomical Refinement - Body Parts Granularity featu
 
 **Purpose**: Core infrastructure for 60-region catalog system
 
-**🔄 IN PROGRESS** - Started 2026-02-25
+**✅ COMPLETE** - Finished 2026-02-25
 
-**⚠️ CRITICAL**: Must complete before user story implementation
-
-- [ ] T005 Create comprehensive body parts catalog with 60 regions in src/lib/body-parts-refined.ts
+- [x] T005 Create comprehensive body parts catalog with 60 regions in src/lib/body-parts-refined.ts
   - Define all 60 region IDs: `neck_left_anterior`, `neck_left_posterior`, ..., `foot_right_planta`
   - Include Spanish names and abbreviations for all 60
   - Define location (front|back) for visibility control
   - Tag: Glúteo regions back-only, Ingle regions front-only
 
-- [ ] T006 [P] Update data models in src/lib/data-models.ts
+- [x] T006 [P] Update data models in src/lib/data-models.ts
   - Extend `BodyPartEntry` to include region hierarchy info
   - Ensure backward compatibility with legacy entries
   - Update `PainEntry` type to reference 60-region IDs
 
-- [ ] T007 [P] Create region grouping utility in src/lib/body-parts-utils.ts
+- [x] T007 [P] Create region grouping utility in src/lib/body-parts-utils.ts
   - Function: get primary region from sub-region ID
   - Function: get subdivisions for a primary region
   - Function: filter regions by location (front/back)
 
-- [ ] T008 [P] Create data migration utilities in src/lib/migrate-pain-data.ts
+- [x] T008 [P] Create data migration utilities in src/lib/migrate-pain-data.ts
   - Function: migrate legacy 30-region data to 60-region format
   - Function: map old region IDs to primary region + subdivision
   - Add timestamp for migration tracking
 
-- [ ] T009 Update usePainData hook in src/lib/hooks/usePainData.ts
+- [x] T009 Update usePainData hook in src/lib/hooks/usePainData.ts
   - Support both legacy (30-region) and new (60-region) formats
   - Auto-migrate on first load if old format detected
   - Maintain all existing CRUD operations for new format
@@ -71,6 +69,8 @@ description: "Task list for Anatomical Refinement - Body Parts Granularity featu
 ## Phase 3: User Story 1 - Record Pain with Highly Granular Regions (Priority: P1) 🎯 MVP
 
 **Goal**: Users can record pain for all 60 anatomical sub-regions with 2-stage selection (region → subdivision → intensity)
+
+**🔄 IN PROGRESS** - Started 2026-02-25
 
 **Independent Test**: 
 1. Open pain tracker (front view)
