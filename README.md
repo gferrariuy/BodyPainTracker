@@ -1,24 +1,28 @@
 # Daily Body Pain Tracker
 
-A modern, interactive web application for tracking and visualizing daily body pain. Users can record pain intensity levels for 30+ anatomical regions, view statistics, and track pain patterns over time.
+A modern, interactive web application for tracking and visualizing daily body pain with anatomical precision. Users can record pain intensity levels for 60+ anatomical sub-regions with a 2-stage selection interface, view statistics, and track pain patterns over time.
 
 ## Features
 
 ### 📊 Core Features
 
-- **Body Pain Recorder** - Interactive diagrams (front/back views) with 30+ clickable anatomical regions
-- **Pain Intensity Slider** - Rate pain from 1-10 with real-time visual feedback
-- **Statistics Dashboard** - View top 10 most painful areas with aggregated data and rankings
-- **Pain History** - Chronological log of all pain entries with editing and deletion options
+- **60-Region Anatomical Precision** - Interactive diagrams (front/back views) with 30 primary regions, each split into 2 subdivisions for granular pain tracking
+- **2-Stage Recording UX** - Click primary region → Select subdivision → Set intensity (1-10)
+- **Body Pain Recorder** - Front and back view diagrams with intelligent region visibility (e.g., gluteal back-only, groin front-only)
+- **Pain Intensity Slider** - Rate pain from 1-10 with real-time visual feedback and anatomical region name display
+- **Statistics Dashboard** - View top 10 most painful sub-regions with aggregated data and rankings (now separated by subdivision)
+- **Pain History** - Chronological log of all pain entries with full anatomical names, editing, and deletion
 - **Time Period Filtering** - Analyze pain patterns over "This Week" (7 days) or "This Month" (30 days)
 
 ### ✨ Technical Highlights
 
+- **60-Region Catalog** - Complete anatomical hierarchy: 15 primary regions × 2 sides × 2 subdivisions
+- **Manual Data Migration** - Optional one-time migration from legacy 30-region system with user confirmation
 - **Static Web Application** - No backend required; runs entirely in the browser
 - **Browser Storage** - Data persists in localStorage with automatic cleanup when quota exceeded
+- **Full Type Safety** - TypeScript throughout with strict compilation
 - **Fully Responsive** - Works seamlessly on mobile, tablet, and desktop
 - **Accessible** - WCAG 2.1 Level AA compliant with semantic HTML and ARIA labels
-- **TypeScript** - Full type safety throughout the application
 - **Modern UI** - Built with React 18 and Tailwind CSS
 
 ## Project Structure
@@ -26,28 +30,38 @@ A modern, interactive web application for tracking and visualizing daily body pa
 ```
 .
 ├── src/
-│   ├── pages/                 # Next.js pages
-│   │   ├── _app.tsx          # App wrapper
-│   │   ├── _document.tsx      # Document template
-│   │   ├── index.tsx          # Recorder page (home)
-│   │   ├── statistics.tsx     # Statistics page
-│   │   └── history.tsx        # History page
-│   ├── components/           # React components
-│   │   ├── BodyDiagram.tsx   # Body diagram with clickable regions
-│   │   ├── BodyPartButton.tsx # Individual body part button
-│   │   └── PainSlider.tsx    # Pain intensity slider
-│   ├── lib/                  # Utilities and helpers
+│   ├── pages/                        # Next.js pages
+│   │   ├── _app.tsx                 # App wrapper
+│   │   ├── _document.tsx            # Document template
+│   │   ├── index.tsx                # Recorder page (home) - 2-stage region selection
+│   │   ├── statistics.tsx           # Statistics page - 60-region rankings
+│   │   └── history.tsx              # History page - full anatomical detail
+│   ├── components/                   # React components
+│   │   ├── BodySVGDiagram.tsx       # Refactored for 60-region system
+│   │   ├── SubdivisionSelector.tsx  # Modal for choosing subdivisions
+│   │   ├── PainSlider.tsx           # Pain intensity slider
+│   │   └── MigrationNotification.tsx # Manual migration UI prompt
+│   ├── lib/                          # Utilities and helpers
 │   │   ├── hooks/
-│   │   │   └── usePainData.ts # Custom hook for pain data management
-│   │   ├── data-models.ts    # TypeScript interfaces
-│   │   ├── body-parts.ts     # Body parts catalog (30+ regions)
-│   │   ├── dates.ts          # Date utilities
-│   │   ├── validation.ts     # Input validation
-│   │   ├── aggregation.ts    # Statistics calculations
-│   │   └── storage.ts        # localStorage operations
+│   │   │   └── usePainData.ts       # Custom hook with manual migration support
+│   │   ├── body-parts-refined.ts    # 60-region catalog with hierarchy
+│   │   ├── body-parts-utils.ts      # Utilities: ID parsing, display names, mapping
+│   │   ├── migrate-pain-data.ts     # Data migration utilities (legacy → 60-region)
+│   │   ├── data-models.ts           # TypeScript interfaces for 60-region system
+│   │   ├── dates.ts                 # Date utilities
+│   │   ├── validation.ts            # Input validation (supports both 30 & 60 regions)
+│   │   ├── aggregation.ts           # Statistics calculations for 60 regions
+│   │   └── storage.ts               # localStorage operations
 │   └── styles/
-│       └── globals.css        # Global styles and Tailwind setup
-├── public/                    # Static assets
+│       └── globals.css               # Global styles and Tailwind setup
+├── specs/
+│   └── 002-anatomical-refinement/   # Feature specification and docs
+│       ├── spec.md                  # Feature definition
+│       ├── tasks.md                 # Task breakdown (35 tasks across 6 phases)
+│       ├── MIGRATION.md             # Migration strategy and mapping table
+│       ├── REGION-IDS-SCHEMA.md     # Complete 60-region ID reference
+│       └── ...
+├── public/                           # Static assets
 ├── package.json              # Dependencies and scripts
 ├── next.config.js           # Next.js configuration
 ├── tsconfig.json            # TypeScript configuration
