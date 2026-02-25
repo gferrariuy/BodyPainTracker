@@ -7,18 +7,55 @@ import {
   addPainEntry,
   updatePainLevel,
   deletePainLevelFromDate,
+  savePainTrackerData,
 } from '../storage';
 import { getTodayString } from '../dates';
+import {
+  isMigrationNeeded,
+  migrateAllLegacyEntries,
+  createMigrationBackup,
+} from '../migrate-pain-data';
 
 export function usePainData() {
   const [entries, setEntries] = useState<Record<string, PainEntry>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [migrationStatus, setMigrationStatus] = useState<'pending' | 'migrated' | 'no-migration' | 'error'>('pending');
 
-  // Load data on mount
+  // Load data on mount and perform migration if needed
   useEffect(() => {
     try {
-      const data = loadPainTrackerData();
+      let data = loadPainTrackerData();
+      
+      // Check if migration is needed
+      if (isMigrationNeeded(data)) {
+        console.log('🔄 Migration needed - converting 30-region to 60-region system');
+        
+        try {
+          // Create backup before migration
+          const backupJson = createMigrationBackup(data);
+          sessionStorage.setItem('painDataBackup', backupJson);
+          
+          // Perform migration
+          const { migratedEntries, migrationType, stats } = migrateAllLegacyEntries(data);
+          
+          console.log(`✅ Migration complete: ${migrationType}`, stats);
+          
+          data = migratedEntries;
+          setMigrationStatus(migrationType === 'no-migration' ? 'no-migration' : 'migrated');
+          
+          // Save migrated data back to localStorage
+          savePainTrackerData(data);
+        } catch (migrationError) {
+          console.error('❌ Migration error:', migrationError);
+          setMigrationStatus('error');
+          setError(`Migration failed: ${migrationError instanceof Error ? migrationError.message : 'Unknown error'}`);
+          // Keep original data if migration fails
+        }
+      } else {
+        setMigrationStatus('no-migration');
+      }
+      
       setEntries(data);
     } catch (err) {
       setError('Failed to load pain data');
@@ -108,6 +145,7 @@ export function usePainData() {
     entries,
     loading,
     error,
+    migrationStatus,
     recordPain,
     updatePain,
     removePain,

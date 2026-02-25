@@ -1,10 +1,19 @@
 // Data models for Pain Tracker application
 
+// Support for both legacy (30-region) and new (60-region) systems
+export type RegionSystemVersion = 'legacy-30' | 'refined-60' | 'hybrid';
+
 export interface BodyPartEntry {
   bodyPartId: string;
   intensityLevel: number; // 1-10
   recordedAt?: string;    // ISO 8601 timestamp
   notes?: string;
+}
+
+export interface BodyPartHierarchy {
+  primaryRegion: string;      // "shoulder", "arm", "knee", etc.
+  side: 'left' | 'right';
+  subdivision: string;        // "superior", "anterior", "proximal", etc.
 }
 
 export interface PainEntry {
@@ -15,6 +24,8 @@ export interface PainEntry {
   metadata?: {
     source?: string;
     notes?: string;
+    systemVersion?: RegionSystemVersion;     // Track which system created entry
+    migratedAt?: string;                     // Timestamp of migration (if migrated)
   };
 }
 
