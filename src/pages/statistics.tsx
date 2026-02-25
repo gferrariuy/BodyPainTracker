@@ -27,15 +27,15 @@ export default function StatisticsPage() {
     return '';
   };
 
-  const periodLabel = period === 'week' ? 'This Week' : 'This Month';
-  const periodDays = period === 'week' ? '(Last 7 days)' : '(Last 30 days)';
+  const periodLabel = period === 'week' ? 'Esta Semana' : 'Este Mes';
+  const periodDays = period === 'week' ? '(Últimos 7 días)' : '(Últimos 30 días)';
 
   if (loading) {
     return (
       <main className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading statistics...</p>
+          <p className="text-gray-600">Cargando estadísticas...</p>
         </div>
       </main>
     );
@@ -47,10 +47,10 @@ export default function StatisticsPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-            Pain Statistics
+            Estadísticas de Dolor
           </h1>
           <p className="text-gray-600">
-            Top 10 most painful body areas by frequency and severity
+            Top 10 de las áreas corporales más dolorosas por frecuencia y severidad
           </p>
         </div>
 
@@ -65,7 +65,7 @@ export default function StatisticsPage() {
             }`}
             aria-pressed={period === 'week'}
           >
-            This Week
+            Esta Semana
           </button>
           <button
             onClick={() => setPeriod('month')}
@@ -76,7 +76,7 @@ export default function StatisticsPage() {
             }`}
             aria-pressed={period === 'month'}
           >
-            This Month
+            Este Mes
           </button>
         </div>
 
@@ -91,10 +91,10 @@ export default function StatisticsPage() {
         {stats.length === 0 ? (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-8 text-center">
             <p className="text-blue-900 text-lg">
-              No pain data recorded yet for {periodLabel.toLowerCase()}.
+              Aún no hay datos de dolor registrados para {period === 'week' ? 'esta semana' : 'este mes'}.
             </p>
             <p className="text-blue-700 mt-2">
-              Start recording your pain to see statistics.
+              Comienza a registrar tu dolor para ver estadísticas.
             </p>
           </div>
         ) : (
@@ -116,8 +116,8 @@ export default function StatisticsPage() {
                         {stat.ranking}. {stat.bodyPartName}
                       </h3>
                       <p className="text-sm text-gray-600">
-                        Recorded {stat.frequency} time
-                        {stat.frequency !== 1 ? 's' : ''}
+                        Registrado {stat.frequency} vez
+                        {stat.frequency !== 1 ? 'es' : ''}
                       </p>
                     </div>
                   </div>
@@ -126,7 +126,7 @@ export default function StatisticsPage() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   <div className="bg-white rounded p-3">
                     <p className="text-xs font-semibold text-gray-600 uppercase">
-                      Total Intensity
+                      Intensidad Total
                     </p>
                     <p className="text-2xl font-bold text-gray-800 mt-1">
                       {stat.totalIntensity}
@@ -135,7 +135,7 @@ export default function StatisticsPage() {
 
                   <div className="bg-white rounded p-3">
                     <p className="text-xs font-semibold text-gray-600 uppercase">
-                      Average
+                      Promedio
                     </p>
                     <p className="text-2xl font-bold text-gray-800 mt-1">
                       {stat.averageIntensity}
@@ -144,7 +144,7 @@ export default function StatisticsPage() {
 
                   <div className="bg-white rounded p-3">
                     <p className="text-xs font-semibold text-gray-600 uppercase">
-                      Frequency
+                      Frecuencia
                     </p>
                     <p className="text-2xl font-bold text-gray-800 mt-1">
                       {stat.frequency}x
@@ -177,13 +177,13 @@ export default function StatisticsPage() {
             href="/"
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold"
           >
-            Record Pain
+            Registrar Dolor
           </Link>
           <Link
             href="/history"
             className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition font-semibold"
           >
-            View History
+            Ver Historial
           </Link>
         </div>
       </div>

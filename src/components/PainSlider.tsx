@@ -25,11 +25,11 @@ export function PainSlider({
     onChange(newValue);
   };
 
-  const getIntensityText = () => {
-    if (localValue <= 3) return 'Mild';
-    if (localValue <= 6) return 'Moderate';
-    if (localValue <= 8) return 'Severe';
-    return 'Very Severe';
+  const getIntensityTextES = () => {
+    if (localValue <= 3) return 'Leve';
+    if (localValue <= 6) return 'Moderado';
+    if (localValue <= 8) return 'Severo';
+    return 'Muy Severo';
   };
 
   const getColorClass = () => {
@@ -61,7 +61,7 @@ export function PainSlider({
           {bodyPartName}
         </h2>
         <p className="text-gray-600 text-sm mb-4">
-          Rate your pain intensity from 1 to 10
+          Califica tu intensidad de dolor de 1 a 10
         </p>
 
         <div className="mb-6">
@@ -82,7 +82,7 @@ export function PainSlider({
               <div className={`text-3xl font-bold ${getColorClass()}`}>
                 {localValue}
               </div>
-              <div className="text-gray-600 text-sm">{getIntensityText()}</div>
+              <div className="text-gray-600 text-sm">{getIntensityTextES()}</div>
             </div>
 
             <div className="flex-1 ml-4">
@@ -105,21 +105,21 @@ export function PainSlider({
           <button
             onClick={onCancel}
             className="flex-1 px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition font-medium"
-            aria-label="Cancel"
+            aria-label="Cancelar"
           >
-            Cancel
+            Cancelar
           </button>
           <button
             onClick={onConfirm}
             className="flex-1 px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition font-medium"
-            aria-label="Confirm pain level"
+            aria-label="Confirmar nivel de dolor"
           >
-            Confirm
+            Confirmar
           </button>
         </div>
 
         <p className="text-xs text-gray-400 text-center mt-4">
-          Press ESC to cancel
+          Presiona ESC para cancelar
         </p>
       </div>
     </div>

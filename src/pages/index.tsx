@@ -37,7 +37,7 @@ export default function RecorderPage() {
       <main className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading pain tracker...</p>
+          <p className="text-gray-600">Cargando rastreador de dolor...</p>
         </div>
       </main>
     );
@@ -49,10 +49,10 @@ export default function RecorderPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-            Body Pain Tracker
+            Rastreador de Dolor Corporal
           </h1>
           <p className="text-gray-600">
-            Recording pain for <span className="font-semibold">{todayReadable}</span>
+            Registrando dolor para <span className="font-semibold">{todayReadable}</span>
           </p>
         </div>
 
@@ -66,7 +66,7 @@ export default function RecorderPage() {
             <button
               onClick={dismissError}
               className="text-red-600 hover:text-red-800 font-bold ml-2"
-              aria-label="Dismiss error"
+              aria-label="Descartar error"
             >
               ✕
             </button>
@@ -76,8 +76,8 @@ export default function RecorderPage() {
         {/* Instructions */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
           <p className="text-blue-900">
-            Click on body parts to record your pain levels. Use the slider to
-            rate intensity from 1 (mild) to 10 (severe).
+            Haz clic en las partes del cuerpo para registrar tus niveles de dolor. Usa el deslizador para
+            calificar la intensidad de 1 (leve) a 10 (severo).
           </p>
         </div>
 
@@ -93,7 +93,7 @@ export default function RecorderPage() {
             aria-selected={activeTab === 'front'}
             role="tab"
           >
-            Front View
+            Vista Frontal
           </button>
           <button
             onClick={() => setActiveTab('back')}
@@ -105,7 +105,7 @@ export default function RecorderPage() {
             aria-selected={activeTab === 'back'}
             role="tab"
           >
-            Back View
+            Vista Trasera
           </button>
         </div>
 
@@ -122,7 +122,7 @@ export default function RecorderPage() {
         {todayEntry && Object.keys(todayEntry.bodyPartEntries).length > 0 && (
           <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
             <h2 className="font-semibold text-green-900 mb-4">
-              Today's Recordings: {Object.keys(todayEntry.bodyPartEntries).length}
+              Registros de Hoy: {Object.keys(todayEntry.bodyPartEntries).length}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
               {Object.entries(todayEntry.bodyPartEntries).map(
@@ -156,13 +156,13 @@ export default function RecorderPage() {
             href="/statistics"
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold"
           >
-            View Statistics
+            Ver Estadísticas
           </Link>
           <Link
             href="/history"
             className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition font-semibold"
           >
-            View History
+            Ver Historial
           </Link>
         </div>
       </div>

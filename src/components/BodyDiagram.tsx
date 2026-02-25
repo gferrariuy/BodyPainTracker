@@ -48,7 +48,7 @@ export function BodyDiagram({
     setSelectedBodyPartId(null);
   };
 
-  const title = location === 'front' ? 'Front View' : 'Back View';
+  const title = location === 'front' ? 'Vista Frontal' : 'Vista Trasera';
 
   return (
     <div className="flex flex-col items-center">

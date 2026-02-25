@@ -38,7 +38,7 @@ export default function HistoryPage() {
       <main className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading history...</p>
+          <p className="text-gray-600">Cargando historial...</p>
         </div>
       </main>
     );
@@ -50,10 +50,10 @@ export default function HistoryPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-            Pain History
+            Historial de Dolor
           </h1>
           <p className="text-gray-600">
-            View and manage your recorded pain entries
+            Ver y gestionar tus registros de dolor grabados
           </p>
         </div>
 
@@ -61,10 +61,10 @@ export default function HistoryPage() {
         {entries.length === 0 ? (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-8 text-center">
             <p className="text-blue-900 text-lg">
-              No pain entries recorded yet.
+              Aún no hay registros de dolor.
             </p>
             <p className="text-blue-700 mt-2">
-              Start recording to see your history here.
+              Comienza a registrar para ver tu historial aquí.
             </p>
           </div>
         ) : (
@@ -86,11 +86,11 @@ export default function HistoryPage() {
                         {getReadableDate(entry.date)}
                       </h3>
                       <p className="text-sm text-gray-600">
-                        {Object.keys(entry.bodyPartEntries).length} body part
+                        {Object.keys(entry.bodyPartEntries).length} parte del cuerpo
                         {Object.keys(entry.bodyPartEntries).length !== 1
                           ? 's'
                           : ''}{' '}
-                        recorded
+                        registrada
                       </p>
                     </div>
                   </div>
@@ -188,7 +188,7 @@ export default function HistoryPage() {
                         onClick={() => handleDeleteDay(entry.date)}
                         className="flex-1 px-4 py-2 text-red-700 bg-red-50 rounded hover:bg-red-100 transition font-semibold text-sm"
                       >
-                        Delete All for This Day
+                        Eliminar Todo para Este Día
                       </button>
                     </div>
                   </div>
@@ -204,13 +204,13 @@ export default function HistoryPage() {
             href="/"
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold"
           >
-            Record Pain
+            Registrar Dolor
           </Link>
           <Link
             href="/statistics"
             className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition font-semibold"
           >
-            View Statistics
+            Ver Estadísticas
           </Link>
         </div>
       </div>
