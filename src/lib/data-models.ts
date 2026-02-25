@@ -3,11 +3,14 @@
 // Support for both legacy (30-region) and new (60-region) systems
 export type RegionSystemVersion = 'legacy-30' | 'refined-60' | 'hybrid';
 
+import { PainTypeCode } from './types/painType';
+
 export interface BodyPartEntry {
   bodyPartId: string;
   intensityLevel: number; // 1-10
-  recordedAt?: string;    // ISO 8601 timestamp
+  recordedAt?: string; // ISO 8601 timestamp
   notes?: string;
+  painType?: PainTypeCode; // optional for backward compatibility; UI will enforce
 }
 
 export interface BodyPartHierarchy {

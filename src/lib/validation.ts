@@ -1,4 +1,5 @@
 import { BodyPartEntry, PainEntry } from './data-models';
+import { isValidPainType } from './types/painType';
 import { bodyPartCatalog } from './body-parts';
 import { bodyPartCatalogRefined } from './body-parts-refined';
 
@@ -32,10 +33,15 @@ export function validateBodyPartEntry(entry: BodyPartEntry): boolean {
   );
 }
 
+export function validatePainTypeIfPresent(entry: BodyPartEntry): boolean {
+  if (!entry.painType) return true; // allow legacy entries without type
+  return isValidPainType(entry.painType as string);
+}
+
 export function validatePainEntry(entry: PainEntry): boolean {
   if (!isValidISO8601(entry.date)) {
     return false;
   }
 
-  return Object.values(entry.bodyPartEntries).every(validateBodyPartEntry);
+  return Object.values(entry.bodyPartEntries).every((e) => validateBodyPartEntry(e) && validatePainTypeIfPresent(e));
 }

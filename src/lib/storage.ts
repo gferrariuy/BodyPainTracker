@@ -4,6 +4,7 @@ import {
 } from './data-models';
 import { getTodayString } from './dates';
 import { validatePainEntry, validateBodyPartEntry } from './validation';
+import type { PainTypeCode } from './types/painType';
 
 const STORAGE_KEY = 'painTracker';
 
@@ -77,7 +78,8 @@ function handleQuotaExceeded(entries: Record<string, PainEntry>): void {
 
 export function addPainEntry(
   bodyPartId: string,
-  intensityLevel: number
+  intensityLevel: number,
+  painType?: string
 ): PainEntry {
   const entries = loadPainTrackerData();
   const today = getTodayString();
@@ -95,6 +97,7 @@ export function addPainEntry(
     bodyPartId,
     intensityLevel,
     recordedAt: new Date().toISOString(),
+    painType: (painType ?? 'unknown') as PainTypeCode,
   };
 
   entries[today].bodyPartEntries[bodyPartId] = bodyPartEntry;
@@ -112,6 +115,7 @@ export function updatePainLevel(
   date: string,
   bodyPartId: string,
   intensityLevel: number
+  , painType?: string
 ): PainEntry {
   const entries = loadPainTrackerData();
 
@@ -123,6 +127,7 @@ export function updatePainLevel(
     bodyPartId,
     intensityLevel,
     recordedAt: new Date().toISOString(),
+    painType: (painType ?? entries[date]?.bodyPartEntries[bodyPartId]?.painType ?? 'unknown') as PainTypeCode,
   };
 
   if (!validateBodyPartEntry(bodyPartEntry)) {

@@ -77,9 +77,9 @@ export function usePainData() {
   }, []);
 
   const recordPain = useCallback(
-    (bodyPartId: string, intensityLevel: number) => {
+    (bodyPartId: string, intensityLevel: number, painType?: string) => {
       try {
-        const entry = addPainEntry(bodyPartId, intensityLevel);
+        const entry = addPainEntry(bodyPartId, intensityLevel, painType);
         setEntries((prev) => ({
           ...prev,
           [entry.date]: entry,
@@ -95,9 +95,9 @@ export function usePainData() {
   );
 
   const updatePain = useCallback(
-    (date: string, bodyPartId: string, intensityLevel: number) => {
+    (date: string, bodyPartId: string, intensityLevel: number, painType?: string) => {
       try {
-        const entry = updatePainLevel(date, bodyPartId, intensityLevel);
+        const entry = updatePainLevel(date, bodyPartId, intensityLevel, painType);
         setEntries((prev) => ({
           ...prev,
           [date]: entry,

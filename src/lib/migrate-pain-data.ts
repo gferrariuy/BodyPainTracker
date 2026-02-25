@@ -1,4 +1,5 @@
 import { PainEntry, BodyPartEntry } from './data-models';
+import type { PainTypeCode } from './types/painType';
 
 /**
  * Data migration utilities for converting from 30-region legacy system
@@ -128,6 +129,7 @@ export function migrateLegacyPainEntry(entry: PainEntry): PainEntry {
         intensityLevel: data.intensityLevel,
         recordedAt: data.recordedAt,
         notes: data.notes,
+        painType: (data.painType ?? 'unknown') as PainTypeCode,
       };
     });
   });
