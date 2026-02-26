@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePainData } from '../lib/hooks/usePainData';
 import { getTodayString, getReadableDate } from '../lib/dates';
-import { BodySVGDiagram } from '../components/BodySVGDiagram';
+import { BodyImageDiagram, BodyPartArea } from '../components/BodyImageDiagram';
 import { getRegionDisplayName } from '../lib/body-parts-utils';
 import { bodyPartCatalogRefined } from '../lib/body-parts-refined';
 import { PainTypeLabels } from '../lib/types/painType';
@@ -16,6 +16,14 @@ export default function RecorderPage() {
     usePainData();
   const [activeTab, setActiveTab] = useState<'front' | 'back'>('front');
   const [localError, setLocalError] = useState<string | null>(null);
+
+  // areas correspond to clickable regions on the provided body image
+  // coords must be determined manually for each zone (e.g. using a graphics editor)
+  const bodyAreas: BodyPartArea[] = [
+    { id: 'left_shoulder', shape: 'poly', coords: '100,90,120,110,80,110' },
+    { id: 'right_shoulder', shape: 'poly', coords: '200,90,220,110,180,110' },
+    // ... add remaining regions matching your image layout
+  ];
 
   const todayEntry = getTodayEntry();
   const today = getTodayString();
@@ -122,10 +130,11 @@ export default function RecorderPage() {
 
         {/* Body Diagram */}
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-          <BodySVGDiagram
-            location={activeTab}
-            painEntry={todayEntry || undefined}
+          <BodyImageDiagram
+            src="/images/body-photo.png" // make sure this file exists (front+back image)
+            areas={bodyAreas}
             onBodyPartSelected={handleBodyPartSelected}
+            width={600}
           />
         </div>
 

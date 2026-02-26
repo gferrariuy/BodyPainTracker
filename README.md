@@ -6,7 +6,7 @@ A modern, interactive web application for tracking and visualizing daily body pa
 
 ### 📊 Core Features
 
-- **60-Region Anatomical Precision** - Interactive diagrams (front/back views) with 30 primary regions, each split into 2 subdivisions for granular pain tracking
+- **60-Region Anatomical Precision** - Interactive diagrams (front/back views) with 30 primary regions, each split into 2 subdivisions for granular pain tracking. The diagram can be implemented as an SVG or as an image with an HTML `<map>` of clickable zones.
 - **2-Stage Recording UX** - Click primary region → Select subdivision → Set intensity (1-10)
 - **Pain Type Classification** - Classify pain during recording with 8 pain type options: Pulsátil, Ardor, Eléctrico, Punzante, Profundo, Rigidez, Sensibilidad al tacto, or Unknown
 - **Body Pain Recorder** - Front and back view diagrams with intelligent region visibility (e.g., gluteal back-only, groin front-only)
