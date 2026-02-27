@@ -20,9 +20,49 @@ export default function RecorderPage() {
   // areas correspond to clickable regions on the provided body image
   // coords must be determined manually for each zone (e.g. using a graphics editor)
   const bodyAreas: BodyPartArea[] = [
-    { id: 'left_shoulder', shape: 'poly', coords: '100,90,120,110,80,110' },
-    { id: 'right_shoulder', shape: 'poly', coords: '200,90,220,110,180,110' },
+   // { id: 'left_shoulder', shape: 'poly', coords: '100,90,120,110,80,110' },
+    //{ id: 'right_shoulder', shape: 'poly', coords: '200,90,220,110,180,110' },
     // ... add remaining regions matching your image layout
+    { id: 'cabeza_frente', coords: '263,42,259,56,263,65,270,74,284,66,286,56,286,40,274,35,281,36', shape: 'poly' },
+    { id: 'cabeza_atras', coords: '388,39,385,44,383,51,383,57,387,62,397,65,409,52,409,40,400,34', shape:'poly'},
+    { id: 'cuello_frente', coords: '274,69,267,69,264,74,274,75,282,74,283,66', shape:'poly'},
+    { id: 'cuello_atras', coords:'387,65,382,73,388,75,399,76,407,73,404,65,396,65', shape:'poly'},
+    { id: 'hombro_trapecio_der_frente',coords:'270,71,263,72,258,73,247,80,239,84,239,95,244,101,252,93,258,85,265,80,272,81', shape:'poly'},
+    { id: 'hombro_trapecio_izq_frente', coords:'285,78,283,85,295,92,303,101,310,95,309,89,302,83,293,77', shape:'poly'},
+    { id: 'pecho_der', coords:"274,90,261,85,251,91,251,100,249,118,253,131,274,125", shape:"poly"},
+    { id: 'pecho_izq', coords:"275,90,278,124,293,133,297,96,290,89", shape:"poly"},
+    { id: 'brazo_der_frente', coords:"238,101,234,138,251,135,246,104", shape:"poly"},
+    { id: 'brazo_izq_frente', coords:"301,105,300,137,313,135,311,100", shape:"poly"},
+    { id: 'antebrazo_der_frente', coords:"246,146,235,143,228,178,238,179", shape:"poly"},
+    { id: 'antebrazo_izq_frente', coords:"302,147,317,144,323,174,312,176", shape:"poly"},
+    { id: 'abdomen_der', coords:"253,140,274,129,276,179,251,170", shape:"poly"},
+    { id: 'abdomen_izq', coords:"273,131,275,173,298,169,291,140", shape:"poly"},
+    { id: 'cadera_der', coords:"250,170,252,184,247,196,244,184", shape:"poly"},
+    { id: 'cadera_izq', coords:"302,168,297,183,304,196,306,182", shape:"poly"},
+    { id: 'ingle', coords:"264,183,274,195,286,183", shape:"poly"},
+    { id: 'pierna_frente_izq', coords:"289,190,279,204,277,236,295,240,304,205,301,206,300,198", shape:"poly"},
+    { id: 'pantorrilla_frente_der', coords:"260,252,271,253,270,298,260,298,255,265", shape:"poly"},
+    { id: 'pantorrilla_frente_izq', coords:"281,254,296,255,290,302,281,295", shape:"poly"},
+    { id: 'hombro_trasero_izq', coords:"391,77,386,90,363,92,371,82", shape:"poly"},
+    { id: 'hombro_trasero_der', coords:"404,73,406,88,429,93,424,83", shape:"poly"},
+    { id: 'espalda_izq', coords:"397,78,397,133,384,126,375,106,375,91", shape:"poly"},
+    { id: 'espalda_der', coords:"402,78,398,136,419,123,422,110,425,95", shape:"poly"},
+    { id: 'pierna_frente_der', coords:"274,236,272,194,260,188,247,206,256,243", shape:"poly"},
+    { id: ' lumbar_izq', coords:"399,140,379,139,379,153,397,173", shape:"poly"},
+    { id: 'lumbar_der', coords:"398,139,400,173,418,157,412,143", shape:"poly"},
+    { id: 'gluteo_izq', coords:"380,166,393,182,392,192,370,189,373,172", shape:"poly"},
+    { id: 'gluteo_der', coords:"417,165,409,174,402,182,405,191,417,191,426,181", shape:"poly"},
+    { id: 'pierna_trasera_izq', coords:"370,200,395,196,395,243,378,238", shape:"poly"},
+    { id: 'pierna_trasera_der', coords:"399,198,399,246,414,241,424,199", shape:"poly"},
+    { id: 'pantorrilla_trasera_izq', coords:"393,256,379,302", shape:"rect"},
+    { id: 'pantorrilla_trasera_der', coords:"400,254,416,254,412,303,403,302", shape:"poly"},
+    { id: 'triceps_izq', coords:"360,95,372,100,372,137,362,133", shape:"poly"},
+    { id: 'triceps_der', coords:"427,94,435,96,432,134,420,134", shape:"poly"},
+    { id: 'antebrazo_tras_izq', coords:"358,139,374,141,360,183,351,180", shape:"poly"},
+    { id: 'antebrazo_tras_der', coords:"421,148,439,148,446,178,437,181", shape:"poly"}
+
+
+
   ];
 
   const todayEntry = getTodayEntry();
@@ -131,7 +171,7 @@ export default function RecorderPage() {
         {/* Body Diagram */}
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
           <BodyImageDiagram
-            src="/images/body-photo.png" // make sure this file exists (front+back image)
+            src="/images/body-photo.jpeg" // make sure this file exists (front+back image)
             areas={bodyAreas}
             onBodyPartSelected={handleBodyPartSelected}
             width={600}
