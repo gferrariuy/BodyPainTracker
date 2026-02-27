@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePainData } from '../lib/hooks/usePainData';
 import { getTodayString, getReadableDate } from '../lib/dates';
 import { BodyImageDiagram, BodyPartArea } from '../components/BodyImageDiagram';
+import { PainSlider } from '../components/PainSlider';
 import { getRegionDisplayName } from '../lib/body-parts-utils';
 import { bodyPartCatalogRefined } from '../lib/body-parts-refined';
 import { PainTypeLabels } from '../lib/types/painType';
@@ -16,6 +17,8 @@ export default function RecorderPage() {
     usePainData();
   const [activeTab, setActiveTab] = useState<'front' | 'back'>('front');
   const [localError, setLocalError] = useState<string | null>(null);
+  const [selectedBodyPartId, setSelectedBodyPartId] = useState<string | null>(null);
+  const [sliderValue, setSliderValue] = useState(5);
 
   // areas correspond to clickable regions on the provided body image
   // using valid IDs from bodyPartCatalogRefined
@@ -79,15 +82,27 @@ export default function RecorderPage() {
   const today = getTodayString();
   const todayReadable = getReadableDate(today);
 
-  const handleBodyPartSelected = (bodyPartId: string, intensity: number, painType: PainTypeCode) => {
-    try {
-      setLocalError(null);
-      recordPain(bodyPartId, intensity, painType);
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to record pain';
-      setLocalError(message);
+  const handleBodyPartSelected = (bodyPartId: string) => {
+    setSelectedBodyPartId(bodyPartId);
+    setSliderValue(5); // reset to default
+  };
+
+  const handleSliderConfirm = (painType: PainTypeCode) => {
+    if (selectedBodyPartId) {
+      try {
+        setLocalError(null);
+        recordPain(selectedBodyPartId, sliderValue, painType);
+        setSelectedBodyPartId(null);
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : 'Failed to record pain';
+        setLocalError(message);
+      }
     }
+  };
+
+  const handleSliderCancel = () => {
+    setSelectedBodyPartId(null);
   };
 
   const dismissError = () => {
@@ -181,12 +196,27 @@ export default function RecorderPage() {
         {/* Body Diagram */}
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
           <BodyImageDiagram
-            src="/images/body-photo.jpeg" // make sure this file exists (front+back image)
+            src="/images/body-photo.jpeg"
             areas={bodyAreas}
-            onBodyPartSelected={handleBodyPartSelected}
+            onBodyPartSelected={(id) => handleBodyPartSelected(id)}
             width={600}
           />
         </div>
+
+        {/* Pain Slider Modal */}
+        {selectedBodyPartId && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
+              <PainSlider
+                value={sliderValue}
+                onChange={setSliderValue}
+                onConfirm={handleSliderConfirm}
+                onCancel={handleSliderCancel}
+                regionId={selectedBodyPartId}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Summary */}
         {todayEntry && Object.keys(todayEntry.bodyPartEntries).length > 0 && (
