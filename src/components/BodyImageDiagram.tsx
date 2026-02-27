@@ -50,7 +50,38 @@ export function BodyImageDiagram({
       />
       <map name={mapName}>
         {areas.map((area) => {
-          const display = area.label || area.id.replace(/_/g, ' ');
+          // convert canonical id to human text (with optional Spanish translation)
+          const toDisplay = (id: string) => {
+            const map: Record<string, string> = {
+              neck: 'cuello',
+              left: 'izquierda',
+              right: 'derecha',
+              anterior: 'anterior',
+              posterior: 'posterior',
+              superior: 'superior',
+              inferior: 'inferior',
+              dorsal: 'dorsal',
+              groin: 'ingle',
+              thigh: 'muslo',
+              shin: 'espinilla',
+              forearm: 'antebrazo',
+              arm: 'brazo',
+              shoulder: 'hombro',
+              lumbar: 'lumbar',
+              gluteal: 'glúteo',
+              ankle: 'tobillo',
+              foot: 'pie',
+              hand: 'mano',
+              knee: 'rodilla',
+              sacroiliac: 'sacroilíaco',
+            };
+            return id
+              .split('_')
+              .map((w) => map[w] || w)
+              .join(' ');
+          };
+
+          const display = area.label || toDisplay(area.id);
           return (
             <area
               key={area.id}
