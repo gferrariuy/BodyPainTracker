@@ -35,6 +35,7 @@ export function BodyImageDiagram({
 }: BodyImageDiagramProps) {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+  const imageRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (e: React.MouseEvent<HTMLAreaElement>, id: string) => {
@@ -42,19 +43,35 @@ export function BodyImageDiagram({
     onBodyPartSelected(id);
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLMapElement>) => {
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (!rect) return;
+  const handleMouseMove = (e: React.MouseEvent<HTMLImageElement>) => {
+    const img = imageRef.current;
+    if (!img) return;
 
+    const rect = img.getBoundingClientRect();
+    const containerRect = containerRef.current?.getBoundingClientRect();
+    if (!containerRect) return;
+
+    // Calculate position relative to the image element
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    setTooltipPos({ x, y });
+    // Scale coordinates based on image's actual size vs natural size
+    const scaleX = img.naturalWidth / rect.width;
+    const scaleY = img.naturalHeight / rect.height;
+
+    const scaledX = x * scaleX;
+    const scaledY = y * scaleY;
+
+    // Set tooltip position relative to viewport
+    setTooltipPos({
+      x: e.clientX - containerRect.left,
+      y: e.clientY - containerRect.top,
+    });
 
     // Check which area the mouse is over
     let foundArea: string | null = null;
     for (const area of areas) {
-      if (isPointInArea(x, y, area)) {
+      if (isPointInArea(scaledX, scaledY, area)) {
         foundArea = area.id;
         break;
       }
@@ -127,14 +144,17 @@ export function BodyImageDiagram({
   return (
     <div className="body-image-diagram relative" ref={containerRef}>
       <img
+        ref={imageRef}
         src={src}
         useMap={`#${mapName}`}
         alt="Diagrama corporal"
         className="w-full h-auto"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
         {...(width ? { width } : {})}
         {...(height ? { height } : {})}
       />
-      <map name={mapName} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+      <map name={mapName}>
         {areas.map((area) => (
           <area
             key={area.id}
